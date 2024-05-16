@@ -1,0 +1,33 @@
+import discord
+from bot_logic import gen_pass
+
+a = "Me alegro, como va tu dia ?(bien o mal)"
+# La variable intents almacena los privilegios del bot
+intents = discord.Intents.default()
+# Activar el privilegio de lectura de mensajes
+intents.message_content = True
+# Crear un bot en la variable cliente y transferirle los privilegios
+client = discord.Client(intents=intents)
+
+@client.event
+async def on_ready():
+    print(f'Hemos iniciado sesión como {client.user}')
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+    if message.content.startswith('hello'):
+        await message.channel.send("Hi!")
+    elif message.content.startswith('bye'):
+        await message.channel.send("hasta luego")
+    elif message.content.startswith("como estas?"):
+        await message.channel.send("Bien y tu")
+    elif message.content.startswith("bien"):
+        await message.channel.send("Que bien me alegro")
+
+
+    else:
+        await message.channel.send("Tu nueva clave es:"+gen_pass(10) )
+
+client.run("Token aqui")
